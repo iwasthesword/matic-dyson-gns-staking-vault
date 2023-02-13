@@ -1,0 +1,76 @@
+import "./App.css";
+import React, { useState, useEffect } from "react";
+import Web3 from "web3";
+import { tokenD } from "./util";
+
+import contractABI from "./abi.json";
+
+const contractADDR = "0x035001ddc2f6dcf2006565af31709f8613a7d70c";
+
+function App() {
+  const [balanceOf, setBalanceOf] = useState();
+  const [pricePerFullShare, setPricePerFullShare] = useState();
+  const [decimals, setDecimals] = useState();
+  const [inputAddress, setInputAddress] = useState();
+  const storedAddress = JSON.parse(localStorage.getItem("address"));
+
+  const handleOnChange = (event) => {
+    setInputAddress(event.target.value);
+    localStorage.setItem("address", JSON.stringify(event.target.value));
+  };
+  useEffect(() => {
+    if (!inputAddress && Web3.utils.isAddress(storedAddress)) {
+      if (storedAddress) setInputAddress(storedAddress);
+    }
+    async function fetchData() {
+      // Initialize web3
+      let web3 = new Web3("https://rpc.ankr.com/polygon");
+
+      // Get the contract instance
+      let contract = new web3.eth.Contract(contractABI, contractADDR);
+
+      let balance_of = await contract.methods.balanceOf(inputAddress).call();
+      setBalanceOf(balance_of);
+
+      let price_per_full_share = await contract.methods
+        .getPricePerFullShare()
+        .call();
+      setPricePerFullShare(price_per_full_share);
+
+      let _decimals = await contract.methods.decimals().call();
+      setDecimals(_decimals);
+    }
+    if (inputAddress && Web3.utils.isAddress(inputAddress)) {
+      fetchData();
+    } else {
+      setBalanceOf(null);
+    }
+
+    // Clear the interval when the component unmounts
+  }, [inputAddress]);
+
+  return (
+    <div className="App">
+      <h1>Dyson GNS Staking Vault</h1>
+      <input type="text" onChange={handleOnChange} value={inputAddress} />
+      {balanceOf && pricePerFullShare && decimals ? (
+        <div>
+          <abbr
+            title={
+              tokenD(balanceOf, decimals) * tokenD(pricePerFullShare, decimals)
+            }
+          >
+            {(
+              tokenD(balanceOf, decimals) * tokenD(pricePerFullShare, decimals)
+            ).toFixed(4)}
+          </abbr>{" "}
+          GNS
+        </div>
+      ) : (
+        <div></div>
+      )}
+    </div>
+  );
+}
+
+export default App;
