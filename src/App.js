@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import { tokenD } from "./util";
+import GNS from "./GNS.js";
 
 import contractABI from "./abi.json";
 
@@ -47,14 +48,20 @@ function App() {
     }
 
     // Clear the interval when the component unmounts
-  }, [inputAddress]);
+  }, [inputAddress, storedAddress]);
 
   return (
     <div className="App">
       <h1>Dyson GNS Staking Vault</h1>
-      <input type="text" onChange={handleOnChange} value={inputAddress} />
+      <input
+        type="text"
+        onChange={handleOnChange}
+        placeholder="Address"
+        value={inputAddress}
+      />
       {balanceOf && pricePerFullShare && decimals ? (
         <div>
+          <GNS />
           <abbr
             title={
               tokenD(balanceOf, decimals) * tokenD(pricePerFullShare, decimals)
