@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/matic-dyson-gns-staking-vault/static/css/main.4f1617ad.css",
-    "main.js": "/matic-dyson-gns-staking-vault/static/js/main.f6e6e1e4.js",
+    "main.js": "/matic-dyson-gns-staking-vault/static/js/main.6a9ae82e.js",
     "static/js/787.40e82bc0.chunk.js": "/matic-dyson-gns-staking-vault/static/js/787.40e82bc0.chunk.js",
     "index.html": "/matic-dyson-gns-staking-vault/index.html",
     "main.4f1617ad.css.map": "/matic-dyson-gns-staking-vault/static/css/main.4f1617ad.css.map",
-    "main.f6e6e1e4.js.map": "/matic-dyson-gns-staking-vault/static/js/main.f6e6e1e4.js.map",
+    "main.6a9ae82e.js.map": "/matic-dyson-gns-staking-vault/static/js/main.6a9ae82e.js.map",
     "787.40e82bc0.chunk.js.map": "/matic-dyson-gns-staking-vault/static/js/787.40e82bc0.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4f1617ad.css",
-    "static/js/main.f6e6e1e4.js"
+    "static/js/main.6a9ae82e.js"
   ]
 }
