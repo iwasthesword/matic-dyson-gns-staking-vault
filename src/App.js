@@ -1,18 +1,22 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
+import moment from "moment";
 import { tokenD } from "./util";
 import GNS from "./GNS.js";
 
 import contractABI from "./abi.json";
+import strategyABI from "./strategy_abi.json";
 
 const contractADDR = "0x035001ddc2f6dcf2006565af31709f8613a7d70c";
+const strategyADDR = "0x95e73a6a39940f0b62afe12a4a3468e95fc61ab0";
 
 function App() {
   const [balanceOf, setBalanceOf] = useState();
   const [pricePerFullShare, setPricePerFullShare] = useState();
   const [decimals, setDecimals] = useState();
   const [inputAddress, setInputAddress] = useState();
+  const [lastHarvest, setLastHarvest] = useState();
   const storedAddress = JSON.parse(localStorage.getItem("address"));
 
   const handleOnChange = (event) => {
@@ -30,6 +34,9 @@ function App() {
       // Get the contract instance
       let contract = new web3.eth.Contract(contractABI, contractADDR);
 
+      // Get the contract instance
+      let strategy = new web3.eth.Contract(strategyABI, strategyADDR);
+
       let balance_of = await contract.methods.balanceOf(inputAddress).call();
       setBalanceOf(balance_of);
 
@@ -40,6 +47,10 @@ function App() {
 
       let _decimals = await contract.methods.decimals().call();
       setDecimals(_decimals);
+
+      let _lastHarvest = await strategy.methods.lastHarvest().call();
+      console.log(_lastHarvest);
+      setLastHarvest(_lastHarvest);
     }
     if (inputAddress && Web3.utils.isAddress(inputAddress)) {
       fetchData();
@@ -75,6 +86,11 @@ function App() {
         </div>
       ) : (
         <div></div>
+      )}
+      {lastHarvest ? (
+        <div>Last harvest: {moment.unix(lastHarvest).fromNow()}</div>
+      ) : (
+        <div>bugadasso</div>
       )}
     </div>
   );
