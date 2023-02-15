@@ -88,9 +88,20 @@ function App() {
         <div></div>
       )}
       {lastHarvest ? (
-        <div>Last harvest: {moment.unix(lastHarvest).fromNow()}</div>
+        <div>
+          Last harvest:{" "}
+          <abbr
+            title={
+              moment.unix(lastHarvest).format("LTS") +
+              " " +
+              moment.unix(lastHarvest).format("L")
+            }
+          >
+            {moment.unix(lastHarvest).fromNow()}
+          </abbr>
+        </div>
       ) : (
-        <div>bugadasso</div>
+        <div></div>
       )}
     </div>
   );
