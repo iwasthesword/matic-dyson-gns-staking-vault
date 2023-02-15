@@ -27,15 +27,13 @@ function App() {
     if (!inputAddress && Web3.utils.isAddress(storedAddress)) {
       if (storedAddress) setInputAddress(storedAddress);
     }
-    async function fetchData() {
-      // Initialize web3
-      let web3 = new Web3("https://rpc.ankr.com/polygon");
 
+    // Initialize web3
+    let web3 = new Web3("https://rpc.ankr.com/polygon");
+
+    async function fetchData() {
       // Get the contract instance
       let contract = new web3.eth.Contract(contractABI, contractADDR);
-
-      // Get the contract instance
-      let strategy = new web3.eth.Contract(strategyABI, strategyADDR);
 
       let balance_of = await contract.methods.balanceOf(inputAddress).call();
       setBalanceOf(balance_of);
@@ -47,9 +45,13 @@ function App() {
 
       let _decimals = await contract.methods.decimals().call();
       setDecimals(_decimals);
+    }
+
+    async function fetchInputlessData() {
+      // Get the contract instance
+      let strategy = new web3.eth.Contract(strategyABI, strategyADDR);
 
       let _lastHarvest = await strategy.methods.lastHarvest().call();
-      console.log(_lastHarvest);
       setLastHarvest(_lastHarvest);
     }
     if (inputAddress && Web3.utils.isAddress(inputAddress)) {
@@ -57,6 +59,7 @@ function App() {
     } else {
       setBalanceOf(null);
     }
+    fetchInputlessData();
 
     // Clear the interval when the component unmounts
   }, [inputAddress, storedAddress]);
@@ -65,6 +68,7 @@ function App() {
     <div className="App">
       <h1>Dyson GNS Staking Vault</h1>
       <input
+        className={!Web3.utils.isAddress(inputAddress) ? "red-border" : ""}
         type="text"
         onChange={handleOnChange}
         placeholder="Address"

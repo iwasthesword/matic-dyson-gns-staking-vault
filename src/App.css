@@ -24,3 +24,6 @@ input[type=text] {
     border: 1px solid #5ffeae;
     border-radius: 100%
 }
+.red-border {
+    border: 2px solid red;
+}
