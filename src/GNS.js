@@ -13,8 +13,8 @@ function GNS() {
           y2="26.1"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.08" stop-color="#2c7aa8" />
-          <stop offset="1" stop-color="#5ffeae" />
+          <stop offset="0.08" stopColor="#2c7aa8" />
+          <stop offset="1" stopColor="#5ffeae" />
         </linearGradient>
         <linearGradient
           id="Degradado_sin_nombre_3"
@@ -24,8 +24,8 @@ function GNS() {
           y2="54.16"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.11" stop-color="#267daf" />
-          <stop offset="1" stop-color="#5ffeae" />
+          <stop offset="0.11" stopColor="#267daf" />
+          <stop offset="1" stopColor="#5ffeae" />
         </linearGradient>
         <linearGradient
           id="Degradado_sin_nombre_9"
@@ -36,7 +36,7 @@ function GNS() {
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0.04" />
-          <stop offset="0.96" stop-color="#0e0e0e" stop-opacity="0" />
+          <stop offset="0.96" stopColor="#0e0e0e" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="Degradado_sin_nombre_8"
@@ -47,7 +47,7 @@ function GNS() {
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0.05" />
-          <stop offset="0.9" stop-color="#0e0e0e" stop-opacity="0" />
+          <stop offset="0.9" stopColor="#0e0e0e" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="Degradado_sin_nombre_175"
@@ -57,8 +57,8 @@ function GNS() {
           y2="65.08"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.08" stop-color="#4dfc8d" />
-          <stop offset="1" stop-color="#1fc3f1" />
+          <stop offset="0.08" stopColor="#4dfc8d" />
+          <stop offset="1" stopColor="#1fc3f1" />
         </linearGradient>
         <linearGradient
           id="Degradado_sin_nombre_176"
@@ -68,8 +68,8 @@ function GNS() {
           y2="72.6"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.07" stop-color="#3efe99" />
-          <stop offset="1" stop-color="#2aabf0" />
+          <stop offset="0.07" stopColor="#3efe99" />
+          <stop offset="1" stopColor="#2aabf0" />
         </linearGradient>
       </defs>
       <g id="Capa_2" data-name="Capa 2">

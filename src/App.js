@@ -2,8 +2,10 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import moment from "moment";
+import Coingecko from "./services/Coingecko";
 import { tokenD } from "./util";
 import GNS from "./GNS.js";
+import Dollar from "./Dollar";
 
 import contractABI from "./abi.json";
 import strategyABI from "./strategy_abi.json";
@@ -17,6 +19,8 @@ function App() {
   const [decimals, setDecimals] = useState();
   const [inputAddress, setInputAddress] = useState();
   const [lastHarvest, setLastHarvest] = useState();
+  const [feeOnProfits, setFeeOnProfits] = useState();
+  const [gnsPrice, setGnsPrice] = useState();
   const storedAddress = JSON.parse(localStorage.getItem("address"));
 
   const handleOnChange = (event) => {
@@ -46,6 +50,17 @@ function App() {
       let _decimals = await contract.methods.decimals().call();
       setDecimals(_decimals);
     }
+    if (inputAddress && Web3.utils.isAddress(inputAddress)) {
+      fetchData();
+    } else {
+      setBalanceOf(null);
+    }
+
+    // Clear the interval when the component unmounts
+  }, [inputAddress, storedAddress]);
+
+  useEffect(() => {
+    let web3 = new Web3("https://rpc.ankr.com/polygon");
 
     async function fetchInputlessData() {
       // Get the contract instance
@@ -53,16 +68,19 @@ function App() {
 
       let _lastHarvest = await strategy.methods.lastHarvest().call();
       setLastHarvest(_lastHarvest);
-    }
-    if (inputAddress && Web3.utils.isAddress(inputAddress)) {
-      fetchData();
-    } else {
-      setBalanceOf(null);
-    }
-    fetchInputlessData();
 
-    // Clear the interval when the component unmounts
-  }, [inputAddress, storedAddress]);
+      let _feeOnProfits = await strategy.methods.feeOnProfits().call();
+      setFeeOnProfits(_feeOnProfits);
+
+      Coingecko.get("/price?ids=gains-network&vs_currencies=usd")
+        .then((response) => setGnsPrice(response.data["gains-network"]["usd"]))
+        .catch((err) => {
+          console.error("error fetching GNS price" + err);
+        });
+    }
+
+    fetchInputlessData();
+  }, []);
 
   return (
     <div className="App">
@@ -89,23 +107,54 @@ function App() {
           GNS
         </div>
       ) : (
-        <div></div>
+        <div>&nbsp;</div>
       )}
-      {lastHarvest ? (
+      {gnsPrice && balanceOf && pricePerFullShare && decimals ? (
         <div>
-          Last harvest:{" "}
+          <Dollar />
           <abbr
             title={
-              moment.unix(lastHarvest).format("LTS") +
-              " " +
-              moment.unix(lastHarvest).format("L")
+              tokenD(balanceOf, decimals) *
+              tokenD(pricePerFullShare, decimals) *
+              gnsPrice
             }
           >
-            {moment.unix(lastHarvest).fromNow()}
+            {(
+              tokenD(balanceOf, decimals) *
+              tokenD(pricePerFullShare, decimals) *
+              gnsPrice
+            ).toFixed(2)}
           </abbr>
         </div>
       ) : (
-        <div></div>
+        <div>&nbsp;</div>
+      )}
+      {lastHarvest ? (
+        <div>
+          <small>
+            Last harvest:{" "}
+            <abbr
+              title={
+                moment.unix(lastHarvest).format("LTS") +
+                " " +
+                moment.unix(lastHarvest).format("L")
+              }
+            >
+              {moment.unix(lastHarvest).fromNow()}
+            </abbr>
+          </small>
+        </div>
+      ) : (
+        <div>&nbsp;</div>
+      )}
+      {feeOnProfits ? (
+        <div>
+          <small>
+            Fee: <abbr title="on profits">{feeOnProfits}%</abbr>
+          </small>
+        </div>
+      ) : (
+        <div>&nbsp;</div>
       )}
     </div>
   );

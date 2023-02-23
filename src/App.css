@@ -18,11 +18,16 @@ input[type=text] {
     text-align: center;
 }
 #GNS {
-    height: 1em;
+    height: calc(1em - 6px);
     vertical-align: middle; 
     padding: 2px;
     border: 1px solid #5ffeae;
     border-radius: 100%
+}
+#dollar {
+    height: 1em;
+    width: auto;
+    vertical-align: middle;
 }
 .red-border {
     border: 2px solid red;
