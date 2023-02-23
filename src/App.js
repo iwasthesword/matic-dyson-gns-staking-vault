@@ -103,8 +103,7 @@ function App() {
             {(
               tokenD(balanceOf, decimals) * tokenD(pricePerFullShare, decimals)
             ).toFixed(4)}
-          </abbr>{" "}
-          GNS
+          </abbr>
         </div>
       ) : (
         <div>&nbsp;</div>
