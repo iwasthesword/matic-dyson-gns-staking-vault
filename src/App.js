@@ -2,7 +2,7 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import moment from "moment";
-import Coingecko from "./services/Coingecko";
+import Defillama from "./services/Defillama";
 import { tokenD } from "./util";
 import GNS from "./GNS.js";
 import Dollar from "./Dollar";
@@ -12,6 +12,7 @@ import strategyABI from "./strategy_abi.json";
 
 const contractADDR = "0x035001ddc2f6dcf2006565af31709f8613a7d70c";
 const strategyADDR = "0x95e73a6a39940f0b62afe12a4a3468e95fc61ab0";
+const gnsADDR = "0xE5417Af564e4bFDA1c483642db72007871397896";
 
 function App() {
   const [balanceOf, setBalanceOf] = useState();
@@ -72,11 +73,12 @@ function App() {
       let _feeOnProfits = await strategy.methods.feeOnProfits().call();
       setFeeOnProfits(_feeOnProfits);
 
-      Coingecko.get("/price?ids=gains-network&vs_currencies=usd")
-        .then((response) => setGnsPrice(response.data["gains-network"]["usd"]))
-        .catch((err) => {
-          console.error("error fetching GNS price" + err);
-        });
+      let llama_gns_addr = "polygon:"+gnsADDR;
+      Defillama.get("/prices/current/"+llama_gns_addr)
+      .then((response) => setGnsPrice(response.data["coins"][llama_gns_addr]["price"]))
+      .catch((err) => {
+        console.error("error fetching GNS price" + err);
+      });
     }
 
     fetchInputlessData();
